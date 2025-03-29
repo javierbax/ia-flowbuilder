@@ -1,13 +1,9 @@
 from fastapi import APIRouter
-from services.gancho.models import GanchoInput, GanchoOutput
-from pydantic import BaseModel
-from typing import List
-from core.openai_client import generar_hooks
+from .schemas import GanchoInput, GanchoOutput
+from .service import generar_gancho
 
-router = APIRouter()
+router = APIRouter(prefix="/gancho")
 
 @router.post("/", response_model=GanchoOutput)
-async def generar_gancho(data: GanchoInput):
-    resultado = generar_hooks(data.tema, data.formato)
-    return resultado
-
+def handler(data: GanchoInput):
+    return generar_gancho(data)
